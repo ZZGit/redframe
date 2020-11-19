@@ -1,6 +1,6 @@
 (ns redframe.core
-  (:require-macros redframe.core)
   (:require
-   [redframe.model :refer [model]]))
+   [redframe.model :as m])
+  (:require-macros redframe.core))
 
-(def reg-model model)
+(def reg-model m/reg-model)

@@ -29,7 +29,7 @@
   (doseq [[k f] subs]
     (rf/reg-sub k (fn [db] (f (get db ns-key))))))
 
-(defn model [params]
+(defn reg-model [params]
   (let [ns-key (get-db-ns-key params)
         init-data (:init params)
         subs (:subs params)

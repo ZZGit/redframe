@@ -1,14 +1,12 @@
-(ns redframe.core
-  (:require
-   [clojure.core.async :refer [chan go >!]]))
+(ns redframe.core)
 
-(defmacro gofn [f & rst]
+(defmacro defgo [f & rst]
   (if (symbol? f)
     (let [args (first rst)
           body (rest rst)]
       `(defn ~f ~args
-         (go
+         (cljs.core.async/go
            (do ~@body))))
     `(fn ~f
-       (go
+       (cljs.core.async/go
          (do ~@rst)))))
