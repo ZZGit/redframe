@@ -9,9 +9,9 @@
 (defn- get-event-db-fn [ns-key f]
   (fn [db & params]
     (let [ns-db (get db ns-key)
-          event-params (get-params-without-id params)]
-      (assoc db ns-key
-             (apply f (conj [ns-db] event-params))))))
+          event-params (get-params-without-id params)
+          result (apply f (conj [ns-db] event-params))]
+      (update db ns-key #(merge % result)))))
 
 (defn reg-db-events [ns-key db-events]
   (doseq [[k v] db-events]
@@ -25,7 +25,7 @@
 (rf/reg-event-db
  ::set-ns-db
  (fn [db [_ ns-key data]]
-   (assoc db ns-key data)))
+   (update db ns-key #(merge % data))))
 
 (defn- set-fx-fns [ns-key fx]
   (let [db (:db fx)]
