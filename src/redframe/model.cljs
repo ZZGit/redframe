@@ -24,10 +24,14 @@
 
 (defn- init-ns-db [ns-key data]
   (rf/dispatch-sync [::init ns-key data]))
-
+[_ params]
 (defn- reg-subs [ns-key subs]
   (doseq [[k f] subs]
-    (rf/reg-sub k (fn [db] (f (get db ns-key))))))
+    (rf/reg-sub k
+                (fn [db & rst]
+                  (if (seq rst)
+                    (f (get db ns-key) (rest (first rst)))
+                    (f (get db ns-key)))))))
 
 (defn reg-model [params]
   (let [ns-key (get-db-ns-key params)
