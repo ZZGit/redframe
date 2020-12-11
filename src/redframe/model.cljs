@@ -24,7 +24,7 @@
 
 (defn- init-ns-db [ns-key data]
   (rf/dispatch-sync [::init ns-key data]))
-[_ params]
+
 (defn- reg-subs [ns-key subs]
   (doseq [[k f] subs]
     (rf/reg-sub k
